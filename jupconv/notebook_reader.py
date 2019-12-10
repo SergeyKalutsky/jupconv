@@ -47,8 +47,6 @@ class NotebookParser():
                                    if 'image/png' in output['data']]
                     for img_source in img_sources:
                         self._save_image(img_source)
-        # take it away later
-        self.delete_temp_folder()
         return self.layout
 
     def delete_temp_folder(self):
