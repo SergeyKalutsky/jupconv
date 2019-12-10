@@ -1,6 +1,7 @@
 import os
 import json
 import uuid
+import shutil
 import base64
 
 
@@ -18,7 +19,7 @@ class NotebookParser():
 
     def _save_image(self, img_source):
         
-        filepath = os.path.join(self.temp_dir, random_filename())
+        filepath = os.path.join(self.temp_dir, self.random_filename())
         img_data = base64.b64decode(img_source)
         
         with open(filepath, "wb") as f:
@@ -46,15 +47,12 @@ class NotebookParser():
                                    if 'image/png' in output['data']]
                     for img_source in img_sources:
                         self._save_image(img_source)
-
+        # take it away later
+        self.delete_temp_folder()
         return self.layout
 
+    def delete_temp_folder(self):
+        shutil.rmtree(self.temp_dir)
 
-def random_filename():
-    return str(uuid.uuid4()) + '.png'
-
-
-if __name__ == '__main__':
-    notebook_filepath = r"C:\Users\Skalutsky\data\JUPYTER NOTEBOOKS\CWORKS market.ipynb"
-    np = NotebookParser(notebook_filepath)
-    print(np.create_layout())
+    def random_filename(self):
+        return str(uuid.uuid4()) + '.png'
